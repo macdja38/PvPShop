@@ -58,3 +58,6 @@ $RECYCLE.BIN/
 .settings/*
 /bin/
 /target/
+
+# InteliJ
+.idea
