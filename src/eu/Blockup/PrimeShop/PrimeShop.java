@@ -339,22 +339,22 @@ public class PrimeShop extends JavaPlugin {
         if (suffix.contains("-1")) {
             suffix = "0";
         }
-        if (prefix.matches("5")) {
+        else if (prefix.matches("5")) {
             suffix = "0";
         }
-        if (prefix.matches("17")) {
+        else if (prefix.matches("17")) {
             suffix = "0";
         }
-        if (prefix.matches("125")) {
+        else if (prefix.matches("125")) {
             suffix = "0";
         }
-        if (prefix.matches("126")) {
+        else if (prefix.matches("126")) {
             suffix = "0";
         }
-        if (prefix.matches("134")) {
+        else if (prefix.matches("134")) {
             suffix = "0";
         }
-        if (prefix.matches("162")) {
+        else if (prefix.matches("162")) {
             suffix = "0";
         }
         return prefix + ":" + suffix;

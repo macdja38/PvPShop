@@ -71,15 +71,25 @@ public class Item_Node_of_ItemBloodline {
 
                 // erzeuge ein neues Obejkt RecepieNode
 
+                // System.out.println(recepie.getResultedItem().toString());
+
                 Recepie_Node_of_ItemBloodline temp_recepie_node = new Recepie_Node_of_ItemBloodline(
                         this);
+
+                // System.out.println(temp_recepie_node);
 
                 // Pr�fe ob Rezept Evil ist
 
                 if (this.Recepie_results_in_parent_Item(recepie)) {
+                    // System.out.println("Recipe is evil");
                     temp_recepie_node.setEvilRecepie(true);
-                    temp_recepie_node.parentNode.parentNode
-                            .setEvilRecepie(true);
+                    temp_recepie_node.parentNode.parentNode.setEvilRecepie(true);
+                }
+
+                if (this.Recepie_results_in_parent_of_parent_item_Item(recepie)) {
+                    temp_recepie_node.setEvilRecepie(true);
+                    temp_recepie_node.parentNode.parentNode.setEvilRecepie(true);
+                    temp_recepie_node.parentNode.parentNode.parentNode.parentNode.setEvilRecepie(true);
                 }
 
                 // �bergibt den Result ItemStack des Bukkit Rezepts, damit
@@ -100,28 +110,40 @@ public class Item_Node_of_ItemBloodline {
 
                     if (!(temp_recepie_node.getEvilRecepie())) {
                         TEST_NODE.grow_this_tree();
-                    } else {
                     }
                     temp_recepie_node.listOfTreeNode.add(TEST_NODE);
                 }
                 // }
                 this.listOfRecepieNodes.add(temp_recepie_node);
             }
-        } else {
         }
     }
 
     private boolean Recepie_results_in_parent_Item(EvaluatedRecipe recepie) {
-        if (this.parentNode != null) {
-            if (this.parentNode.parentNode != null) {
-                ItemStack oponentItem = this.parentNode.parentNode.sqlItemStack
-                        .getSql_Item().getMcItemId_as_ItemStack(1);
-                for (ItemStack itemstack : recepie.getImputItemList()) {
-                    if (Item_Comparer.do_Items_match(itemstack, oponentItem,
-                            true, false, true, true, true)) {
-                        return true;
-                    }
+        if (this.parentNode != null && this.parentNode.parentNode != null) {
+            ItemStack oponentItem = this.parentNode.parentNode.sqlItemStack
+                    .getSql_Item().getMcItemId_as_ItemStack(1);
+            for (ItemStack itemstack : recepie.getImputItemList()) {
+                if (Item_Comparer.do_Items_match(itemstack, oponentItem,
+                        true, false, true, true, true)) {
+                    return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    private boolean Recepie_results_in_parent_of_parent_item_Item(EvaluatedRecipe recepie) {
+        if (this.parentNode == null || this.parentNode.parentNode == null) return false;
+        if (this.parentNode.parentNode.parentNode == null || this.parentNode.parentNode.parentNode.parentNode == null) {
+            return false;
+        }
+        ItemStack oponentItem = this.parentNode.parentNode.parentNode.parentNode.sqlItemStack
+                .getSql_Item().getMcItemId_as_ItemStack(1);
+        for (ItemStack itemstack : recepie.getImputItemList()) {
+            if (Item_Comparer.do_Items_match(itemstack, oponentItem,
+                    true, false, true, true, true)) {
+                return true;
             }
         }
         return false;
