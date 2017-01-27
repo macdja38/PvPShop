@@ -73,8 +73,7 @@ public class Item_Node_of_ItemBloodline {
 
                 // System.out.println(recepie.getResultedItem().toString());
 
-                Recepie_Node_of_ItemBloodline temp_recepie_node = new Recepie_Node_of_ItemBloodline(
-                        this);
+                Recepie_Node_of_ItemBloodline temp_recepie_node = new Recepie_Node_of_ItemBloodline(this);
 
                 // System.out.println(temp_recepie_node);
 
@@ -87,9 +86,10 @@ public class Item_Node_of_ItemBloodline {
                 }
 
                 if (this.Recepie_results_in_parent_of_parent_item_Item(recepie)) {
-                    temp_recepie_node.setEvilRecepie(true);
-                    temp_recepie_node.parentNode.parentNode.setEvilRecepie(true);
-                    temp_recepie_node.parentNode.parentNode.parentNode.parentNode.setEvilRecepie(true);
+                    System.out.println("Tree " + this.sqlItemStack.getSql_Item().mcItemid + " " + this.sqlItemStack.getSql_Item().itemDisplayname);
+                    System.out.println(temp_recepie_node.parentNode.sqlItemStack.getSql_Item().mcItemid + " " + this.sqlItemStack.getSql_Item().itemDisplayname);
+                    System.out.println("Results in " + recepie.getResultedItem().toString());
+                    continue;
                 }
 
                 // �bergibt den Result ItemStack des Bukkit Rezepts, damit
