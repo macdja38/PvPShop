@@ -3,6 +3,9 @@ package eu.Blockup.PrimeShop.PricingEngine.Item_Analysis;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import org.apache.commons.lang.ArrayUtils;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import eu.Blockup.PrimeShop.PrimeShop;
 import eu.Blockup.PrimeShop.Other.Cofiguration_Handler;
@@ -15,6 +18,11 @@ public class Item_Node_of_ItemBloodline {
     private List<Recepie_Node_of_ItemBloodline> listOfRecepieNodes;
     private Shop_Item_Stack sqlItemStack;
     private PrimeShop plugin;
+    private static int[] ignoreList = {
+            256,257,258,267,292,306,307,308,309,417, // iron items to ignore
+            283,284,285,286,294,314,315,316,317,418, // gold items to ignore
+            425 // banners
+    };
 
     public PrimeShop getPlugin() {
         return plugin;
@@ -85,10 +93,18 @@ public class Item_Node_of_ItemBloodline {
                     temp_recepie_node.parentNode.parentNode.setEvilRecepie(true);
                 }
 
-                if (this.Recepie_results_in_parent_of_parent_item_Item(recepie)) {
-                    System.out.println("Tree " + this.sqlItemStack.getSql_Item().mcItemid + " " + this.sqlItemStack.getSql_Item().itemDisplayname);
-                    System.out.println(temp_recepie_node.parentNode.sqlItemStack.getSql_Item().mcItemid + " " + this.sqlItemStack.getSql_Item().itemDisplayname);
-                    System.out.println("Results in " + recepie.getResultedItem().toString());
+                // System.out.println("crafting" + recepie.getResultedItem().toString());
+
+                // Don't craft air, probably does not do anything because of the other one further down
+                if (recepie.getResultedItem().getTypeId() == 0) { // if air don't try and craft it
+                    // System.out.println("Skipping crafting of air");
+                    continue;
+                }
+
+                // blacklisted recopies that are a single item -> nuggets
+                // System.out.println("ingredients" + recepie.getImputItemList().toString());
+                if (recepie.getImputItemList().size() == 1 && ArrayUtils.contains(ignoreList, recepie.getImputItemList().get(0).getTypeId())) {
+                    // System.out.println("this item is a recipe based on item id " + recepie.getImputItemList().get(0).getTypeId());
                     continue;
                 }
 
@@ -99,6 +115,12 @@ public class Item_Node_of_ItemBloodline {
 
                 // f�r jedes Imput Item aus dem Rezept
                 for (ItemStack itemstack : recepie.getImputItemList()) {
+
+                    if (itemstack.getType().equals(Material.AIR)) {
+                        // in 1.11 mojang replaced a ton of null with air, this ignores that air.
+                        // System.out.println("Recipe wants air... **NO**");
+                        continue;
+                    }
 
                     // speichere Item in das temp Objekt (writes itemstack
                     // as sqlitem as sqlitemstack as treenode to list)
