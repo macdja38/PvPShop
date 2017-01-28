@@ -38,7 +38,7 @@ public class Message_Handler {
         hashMap_Messages.put(10, ChatColor.RED + "Error in price calculation");
         hashMap_Messages.put(11, ChatColor.RED + "Inventory is full");
         hashMap_Messages.put(12, ChatColor.RED + "You have to choose an item first!");
-        hashMap_Messages.put(13, ChatColor.RED + "Error in price calculation, please inform an Moderator");
+        hashMap_Messages.put(13, ChatColor.RED + "Error in price calculation, please inform a Moderator");
         hashMap_Messages.put(14, ChatColor.RED + "You don't have enough of this Item");
         hashMap_Messages.put(15, ChatColor.GOLD + "Sold for: " + ChatColor.GREEN + "UniQue1");
         hashMap_Messages.put(16, ChatColor.RED + "There are no shops!");
